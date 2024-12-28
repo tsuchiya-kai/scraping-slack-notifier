@@ -3,6 +3,7 @@ name: Scraping and Slack Notification
 on:
   schedule:
     - cron: "0 */12 * * *" # 半日に1回
+  workflow_dispatch: # 手動実行用のトリガー
 
 jobs:
   scraping-and-notify:
