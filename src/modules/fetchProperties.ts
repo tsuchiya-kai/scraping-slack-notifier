@@ -21,7 +21,7 @@ export async function fetchProperties(): Promise<ApiResponse> {
   try {
     const response = await axios.post<ApiResponse>(
       url,
-      { name: "petg" },
+      { name: "pet" },
       {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
