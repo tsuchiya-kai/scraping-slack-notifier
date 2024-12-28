@@ -1,43 +1,33 @@
 import axios from "axios";
-import { ScrapingResult } from "./scraper";
 import dotenv from "dotenv";
+import { ProcessedProperty } from "./modules/processProperties";
 
 dotenv.config();
 
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
 export async function notifySlack(
-  ScrapingResults: ScrapingResult[]
+  properties: ProcessedProperty[]
 ): Promise<void> {
   if (!SLACK_WEBHOOK_URL) {
     console.error("Slack Webhook URLが設定されていません。");
     return;
   }
 
-  if (ScrapingResults.length === 0) {
-    console.log("物件情報がありません。");
+  if (properties.length === 0) {
+    console.log("通知する物件情報がありません。");
     return;
   }
 
-  const message = ScrapingResults.map((result) => {
-    return `
-      スクレイピング先: ${result.url}
-
-      [ 結果 ] 
-       ${result.data.map((d, i) => {
-         return `
-        [ 結果${i + 1} ] 
-        *エリア*: ${d.area}
-        *物件名*: ${d.name}
-        *空室数*: ${d.vacantCount}
-        *家賃範囲*: ${d.rentRange}
-        *共益費*: ${d.commonFee}
-        *最寄駅*: ${d.stations.join(", ")}
-        `;
-       })}
-
-`;
-  }).join("\n---\n");
+  const message = properties
+    .map(
+      (property) =>
+        `*${property.blockName}*\n` +
+        property.prefectures
+          .map((pref) => `• ${pref.name}: 空室数 ${pref.vacantCount}`)
+          .join("\n")
+    )
+    .join("\n\n");
 
   try {
     await axios.post(SLACK_WEBHOOK_URL, {
