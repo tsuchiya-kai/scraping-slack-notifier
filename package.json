@@ -1,0 +1,32 @@
+{
+  "name": "scraping-slack-notifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "run": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsuchiya-kai/scraping-slack-notifier.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tsuchiya-kai/scraping-slack-notifier/issues"
+  },
+  "homepage": "https://github.com/tsuchiya-kai/scraping-slack-notifier#readme",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.4",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
