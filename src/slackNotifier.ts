@@ -57,7 +57,9 @@ export async function notifySlack(
   try {
     await postSlackChannel(
       `${
-        containsWatchedPrefecture ? "<!channel> **千葉情報あり!!** \n" : ""
+        containsWatchedPrefecture
+          ? "<!channel> \n **🙌🙌🙌🙌千葉情報あり!!🙌🙌🙌🙌🙌** \n チェック ⏩ https://www.ur-net.go.jp/chintai/whats/system/pet/ \n"
+          : ""
       }🏠 *最新の情報* 🏠\n\n${message}`
     );
 
