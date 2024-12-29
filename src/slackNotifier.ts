@@ -2,6 +2,8 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { ProcessedProperty } from "./modules/processProperties";
 
+dotenv.config();
+
 const watchPrefectures = ["千葉"]; //tdfk_name
 
 const hasPrefectureInProcessedProperty = (
@@ -13,9 +15,7 @@ const hasPrefectureInProcessedProperty = (
     )
   );
 
-dotenv.config();
-
-const postSlackCannel = async (message: string) => {
+const postSlackChannel = async (message: string) => {
   const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
   if (!SLACK_WEBHOOK_URL) {
@@ -23,19 +23,26 @@ const postSlackCannel = async (message: string) => {
     return;
   }
 
-  await axios.post(SLACK_WEBHOOK_URL, {
-    text: message,
-  });
+  try {
+    await axios.post(SLACK_WEBHOOK_URL, {
+      text: message,
+    });
+  } catch (error) {
+    console.error("Slack Webhookの送信に失敗しました:", error);
+  }
 };
 
 export async function notifySlack(
   properties: ProcessedProperty[]
 ): Promise<void> {
   if (properties.length === 0) {
-    postSlackCannel("通知する物件情報がありません🥲");
+    await postSlackChannel("通知する物件情報がありません🥲");
     console.log("通知する物件情報がありません。");
     return;
   }
+
+  const containsWatchedPrefecture =
+    hasPrefectureInProcessedProperty(properties);
 
   const message = properties
     .map(
@@ -48,12 +55,10 @@ export async function notifySlack(
     .join("\n\n");
 
   try {
-    await postSlackCannel(
+    await postSlackChannel(
       `${
-        !hasPrefectureInProcessedProperty(properties)
-          ? "<!channel> 千葉情報あり!!"
-          : ""
-      }🏠 *新しい物件情報* 🏠\n\n${message}`
+        containsWatchedPrefecture ? "<!channel> **千葉情報あり!!** \n" : ""
+      }🏠 *最新の情報* 🏠\n\n${message}`
     );
 
     console.log("Slack通知を送信しました。");
