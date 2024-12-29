@@ -50,7 +50,9 @@ export async function notifySlack(
   try {
     await postSlackCannel(
       `${
-        hasPrefectureInProcessedProperty(properties) ? "<!channel> " : ""
+        hasPrefectureInProcessedProperty(properties)
+          ? "<!channel> 千葉情報あり!!"
+          : ""
       }🏠 *新しい物件情報* 🏠\n\n${message}`
     );
 
