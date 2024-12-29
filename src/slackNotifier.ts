@@ -15,9 +15,9 @@ const hasPrefectureInProcessedProperty = (
 
 dotenv.config();
 
-const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
-
 const postSlackCannel = async (message: string) => {
+  const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
+
   if (!SLACK_WEBHOOK_URL) {
     console.error("Slack Webhook URLが設定されていません。");
     return;
@@ -50,7 +50,7 @@ export async function notifySlack(
   try {
     await postSlackCannel(
       `${
-        hasPrefectureInProcessedProperty(properties)
+        !hasPrefectureInProcessedProperty(properties)
           ? "<!channel> 千葉情報あり!!"
           : ""
       }🏠 *新しい物件情報* 🏠\n\n${message}`
