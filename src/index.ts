@@ -1,4 +1,4 @@
-import { fetchProperties } from "./modules/fetchProperties";
+import { fetchProperties } from "./fetcher/fetchProperties";
 import { hasPrefectureInProcessedProperty } from "./modules/checker";
 import { notifySlack } from "./slackNotifier";
 

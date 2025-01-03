@@ -1,4 +1,4 @@
-import { ProcessedProperty } from "./fetchProperties";
+import { ProcessedProperty } from "../fetcher/fetchProperties";
 
 const WATCH_PREFECTURES = ["千葉", "埼玉"]; //tdfk_name
 
