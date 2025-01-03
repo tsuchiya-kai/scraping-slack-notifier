@@ -7,14 +7,16 @@ import type { FormattedBukkenData } from "../../fetcher/fetchBukkenDetails";
  */
 export function formatBukkenDetails(property: FormattedBukkenData): string {
   return `\
-*物件名*: ${property.name}  
-*所在地*: ${property.location}  
-*部屋数*: ${property.roomCount}部屋  
-*家賃*: ${property.rent}  
-*共益費*: ${property.commonFee}  
-*アクセス*:  
-${property.access.map((line) => `  - ${line}`).join("\n")}  
-*詳細*: <${property.detailUrl}|物件詳細ページ>  
+    *物件名*: ${property.name}  
+    *所在地*: ${property.location}  
+    *部屋数*: ${property.roomCount}部屋  
+    *家賃*: ${property.rent}  
+    *共益費*: ${property.commonFee}  
+    *アクセス*:  
+    ${property.access.map((line) => `  - ${line}`).join("\n")}  
+    *詳細*: <${property.detailUrl}|物件詳細ページ>  
+
+    ${property.imageUrl}
 `;
 }
 
@@ -43,7 +45,7 @@ export function formatBukkenDetailsGroupedByPrefecture(
       const formattedBukken = bukkenList
         .map(formatBukkenDetails)
         .join("\n---\n");
-      return `*${prefecture}の物件*:\n${formattedBukken}`;
+      return `*${grouped[prefecture][0].tdfkName}県${prefecture}の物件*:\n${formattedBukken}`;
     })
     .join("\n\n====================\n\n");
 }

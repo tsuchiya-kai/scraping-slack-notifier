@@ -4,6 +4,8 @@ import axios from "axios";
  * @note 物件のデータ
  */
 export interface FormattedBukkenData {
+  tdfkName: string;
+
   id: string;
   name: string;
   location: string;
@@ -32,8 +34,12 @@ interface BukkenData {
  * @param data APIから取得した生データ
  * @returns 整形済みの物件データ
  */
-const processBukkenDetails = (data: BukkenData[]): FormattedBukkenData[] =>
+const processBukkenDetails = (
+  data: BukkenData[],
+  tdfkName: string
+): FormattedBukkenData[] =>
   data.map((bukken) => ({
+    tdfkName,
     id: bukken.id,
     name: bukken.name,
     location: bukken.skcs,
@@ -54,7 +60,8 @@ const processBukkenDetails = (data: BukkenData[]): FormattedBukkenData[] =>
  * @returns 整形済みの物件データリスト
  */
 export async function fetchBukkenDetails(
-  tdfk: string
+  tdfk: string,
+  tdfkName: string
 ): Promise<FormattedBukkenData[]> {
   const url =
     "https://chintai.r6.ur-net.go.jp/chintai/api/bukken/search/system_bukken/";
@@ -75,7 +82,7 @@ export async function fetchBukkenDetails(
       }
     );
 
-    return processBukkenDetails(response.data);
+    return processBukkenDetails(response.data, tdfkName);
   } catch (error) {
     console.error("物件データの取得に失敗しました:", error);
     throw error;

@@ -39,13 +39,13 @@ export async function fetchChibaAndSaitamaData(
     const data: FetchChibaAndSaitamaData = { chiba: [], saitama: [] };
 
     if (chiba) {
-      const chibaData = await fetchBukkenDetails(chiba.tdfk);
+      const chibaData = await fetchBukkenDetails(chiba.tdfk, chiba.name);
       data.chiba = chibaData;
       console.log("千葉データ:", chibaData);
     }
 
     if (saitama) {
-      const saitamaData = await fetchBukkenDetails(saitama.tdfk);
+      const saitamaData = await fetchBukkenDetails(saitama.tdfk, saitama.name);
       data.saitama = saitamaData;
       console.log("埼玉データ:", saitamaData);
     }
