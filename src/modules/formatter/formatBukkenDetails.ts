@@ -1,11 +1,11 @@
-import type { formattedBukkenData } from "../../fetcher/fetchBukkenDetails";
+import type { FormattedBukkenData } from "../../fetcher/fetchBukkenDetails";
 
 /**
  * 物件データをSlack通知用のフォーマットに変換する関数
  * @param property 整形済みの物件データ
  * @returns Slack通知用の文字列
  */
-export function formatBukkenDetails(property: formattedBukkenData): string {
+export function formatBukkenDetails(property: FormattedBukkenData): string {
   return `\
 *物件名*: ${property.name}  
 *所在地*: ${property.location}  
@@ -24,7 +24,7 @@ ${property.access.map((line) => `  - ${line}`).join("\n")}
  * @returns Slack通知用の文字列リスト
  */
 export function formatBukkenDetailsForSlack(
-  properties: formattedBukkenData[]
+  properties: FormattedBukkenData[]
 ): string {
   return properties.map(formatBukkenDetails).join("\n---\n");
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 /**
  * @note 物件のデータ
  */
-export interface formattedBukkenData {
+export interface FormattedBukkenData {
   id: string;
   name: string;
   location: string;
@@ -32,7 +32,7 @@ interface BukkenData {
  * @param data APIから取得した生データ
  * @returns 整形済みの物件データ
  */
-const processBukkenDetails = (data: BukkenData[]): formattedBukkenData[] =>
+const processBukkenDetails = (data: BukkenData[]): FormattedBukkenData[] =>
   data.map((bukken) => ({
     id: bukken.id,
     name: bukken.name,
@@ -55,7 +55,7 @@ const processBukkenDetails = (data: BukkenData[]): formattedBukkenData[] =>
  */
 export async function fetchBukkenDetails(
   tdfk: string
-): Promise<formattedBukkenData[]> {
+): Promise<FormattedBukkenData[]> {
   const url =
     "https://chintai.r6.ur-net.go.jp/chintai/api/bukken/search/system_bukken/";
 

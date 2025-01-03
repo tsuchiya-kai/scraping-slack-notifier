@@ -1,5 +1,6 @@
 import { fetchProperties } from "./fetcher/fetchProperties";
-import { hasPrefectureInformattedProperty } from "./modules/checker";
+import { hasPrefectureInFormattedProperty } from "./modules/checker";
+import { formatBukkenDetailsForSlack } from "./modules/formatter/formatBukkenDetails";
 import { notifySlack } from "./slackNotifier";
 
 (async function main() {
@@ -7,9 +8,10 @@ import { notifySlack } from "./slackNotifier";
     console.log("APIから物件情報を取得します...");
     const data = await fetchProperties();
     console.log({ data });
-    if (hasPrefectureInformattedProperty(data)) {
+
+    if (hasPrefectureInFormattedProperty(data)) {
       console.log("Slackに通知を送信します...");
-      await notifySlack("物件あり");
+      await notifySlack(formatBukkenDetailsForSlack(data));
     } else {
       console.log("物件情報はありませんでした");
     }

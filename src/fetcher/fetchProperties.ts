@@ -2,11 +2,12 @@ import axios from "axios";
 /**
  * @note 地域のデータ
  */
-export interface formattedProperty {
+export interface FormattedProperty {
   blockName: string;
   prefectures: {
     name: string;
     vacantCount: number;
+    tdfk: string;
   }[];
 }
 
@@ -21,16 +22,17 @@ export interface BlockData {
   tdfk: TdfkData[];
 }
 
-const processProperties = (data: BlockData[]): formattedProperty[] =>
+const processProperties = (data: BlockData[]): FormattedProperty[] =>
   data.map((block) => ({
     blockName: block.block_name,
     prefectures: block.tdfk.map((pref) => ({
       name: pref.tdfk_name,
       vacantCount: pref.tdfk_count,
+      tdfk: pref.tdfk,
     })),
   }));
 
-export async function fetchProperties(): Promise<formattedProperty[]> {
+export async function fetchProperties(): Promise<FormattedProperty[]> {
   const url =
     "https://chintai.r6.ur-net.go.jp/chintai/api/seidolist/init_seidolist/";
 
