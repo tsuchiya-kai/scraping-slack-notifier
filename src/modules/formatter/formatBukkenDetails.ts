@@ -12,9 +12,7 @@ export function formatBukkenDetails(property: FormattedBukkenData): string {
     *部屋数*: ${property.roomCount}部屋  
     *家賃*: ${property.rent}  
     *共益費*: ${property.commonFee}  
-    *アクセス*: \n
-    ${property.access.map((line) => `  ・${line}`).join("\n")}\n
-    *詳細*: <${property.detailUrl}|物件詳細ページ>  
+    *アクセス*: \n${property.access.map((line) => `・${line}`).join("\n")}
 
     ${property.imageUrl}
 `;
