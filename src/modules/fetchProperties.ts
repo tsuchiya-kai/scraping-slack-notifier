@@ -1,25 +1,41 @@
 import axios from "axios";
+/**
+ * @note 地域のデータ
+ */
+export interface ProcessedProperty {
+  blockName: string;
+  prefectures: {
+    name: string;
+    vacantCount: number;
+  }[];
+}
 
-export interface TdfkData {
+interface TdfkData {
   tdfk: string;
   tdfk_name: string;
   tdfk_count: number;
   room: any[];
 }
-
 export interface BlockData {
   block_name: string;
   tdfk: TdfkData[];
 }
 
-export type ApiResponse = BlockData[];
+const processProperties = (data: BlockData[]): ProcessedProperty[] =>
+  data.map((block) => ({
+    blockName: block.block_name,
+    prefectures: block.tdfk.map((pref) => ({
+      name: pref.tdfk_name,
+      vacantCount: pref.tdfk_count,
+    })),
+  }));
 
-export async function fetchProperties(): Promise<ApiResponse> {
+export async function fetchProperties(): Promise<ProcessedProperty[]> {
   const url =
     "https://chintai.r6.ur-net.go.jp/chintai/api/seidolist/init_seidolist/";
 
   try {
-    const response = await axios.post<ApiResponse>(
+    const response = await axios.post<BlockData[]>(
       url,
       { name: "pet" },
       {
@@ -34,7 +50,7 @@ export async function fetchProperties(): Promise<ApiResponse> {
       }
     );
 
-    return response.data;
+    return processProperties(response.data);
   } catch (error) {
     console.error("APIからのデータ取得に失敗しました:", error);
     throw error;

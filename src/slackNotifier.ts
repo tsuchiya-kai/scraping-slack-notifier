@@ -1,6 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import { ProcessedProperty } from "./modules/processProperties";
+import { ProcessedProperty } from "./modules/fetchProperties";
 
 dotenv.config();
 
