@@ -2,7 +2,7 @@ import axios from "axios";
 /**
  * @note 地域のデータ
  */
-export interface ProcessedProperty {
+export interface formattedProperty {
   blockName: string;
   prefectures: {
     name: string;
@@ -21,7 +21,7 @@ export interface BlockData {
   tdfk: TdfkData[];
 }
 
-const processProperties = (data: BlockData[]): ProcessedProperty[] =>
+const processProperties = (data: BlockData[]): formattedProperty[] =>
   data.map((block) => ({
     blockName: block.block_name,
     prefectures: block.tdfk.map((pref) => ({
@@ -30,7 +30,7 @@ const processProperties = (data: BlockData[]): ProcessedProperty[] =>
     })),
   }));
 
-export async function fetchProperties(): Promise<ProcessedProperty[]> {
+export async function fetchProperties(): Promise<formattedProperty[]> {
   const url =
     "https://chintai.r6.ur-net.go.jp/chintai/api/seidolist/init_seidolist/";
 

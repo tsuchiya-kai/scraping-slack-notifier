@@ -1,12 +1,12 @@
-import { ProcessedProperty } from "../fetcher/fetchProperties";
+import { formattedProperty } from "../fetcher/fetchProperties";
 
 const WATCH_PREFECTURES = ["千葉", "埼玉"]; //tdfk_name
 
-export const hasPrefectureInProcessedProperty = (
-  processedProperties: ProcessedProperty[]
+export const hasPrefectureInformattedProperty = (
+  processedProperties: formattedProperty[]
 ): boolean =>
-  processedProperties.some((processedProperty) =>
-    processedProperty.prefectures.some((prefecture) =>
+  processedProperties.some((formattedProperty) =>
+    formattedProperty.prefectures.some((prefecture) =>
       WATCH_PREFECTURES.includes(prefecture.name)
     )
   );
