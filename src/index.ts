@@ -1,6 +1,9 @@
 import { fetchProperties } from "./fetcher/fetchProperties";
-import { hasPrefectureInFormattedProperty } from "./modules/checker";
-import { formatBukkenDetailsForSlack } from "./modules/formatter/formatBukkenDetails";
+import {
+  hasPrefectureInFormattedProperty,
+  fetchChibaAndSaitamaData,
+} from "./modules/checker";
+import { formatBukkenDetailsGroupedByPrefecture } from "./modules/formatter/formatBukkenDetails";
 import { notifySlack } from "./slackNotifier";
 
 (async function main() {
@@ -11,7 +14,15 @@ import { notifySlack } from "./slackNotifier";
 
     if (hasPrefectureInFormattedProperty(data)) {
       console.log("Slackに通知を送信します...");
-      await notifySlack(formatBukkenDetailsForSlack(data));
+      const bukkenData = await fetchChibaAndSaitamaData(data);
+      if (bukkenData) {
+        await notifySlack(
+          formatBukkenDetailsGroupedByPrefecture([
+            ...bukkenData.chiba,
+            ...bukkenData.saitama,
+          ])
+        );
+      }
     } else {
       console.log("物件情報はありませんでした");
     }

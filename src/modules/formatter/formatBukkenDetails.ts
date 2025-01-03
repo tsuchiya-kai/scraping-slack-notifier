@@ -19,12 +19,31 @@ ${property.access.map((line) => `  - ${line}`).join("\n")}
 }
 
 /**
- * 複数の物件データをSlack通知用のフォーマットに変換する関数
+ * 都道府県ごとに物件データをグルーピングしてSlack通知用のフォーマットに変換する関数
  * @param properties 整形済みの物件データリスト
- * @returns Slack通知用の文字列リスト
+ * @returns 都道府県ごとにグルーピングされたSlack通知用の文字列
  */
-export function formatBukkenDetailsForSlack(
+export function formatBukkenDetailsGroupedByPrefecture(
   properties: FormattedBukkenData[]
 ): string {
-  return properties.map(formatBukkenDetails).join("\n---\n");
+  const grouped = properties.reduce<Record<string, FormattedBukkenData[]>>(
+    (acc, property) => {
+      const prefecture = property.location.split(" ")[0]; // 都道府県名を取得
+      if (!acc[prefecture]) {
+        acc[prefecture] = [];
+      }
+      acc[prefecture].push(property);
+      return acc;
+    },
+    {}
+  );
+
+  return Object.entries(grouped)
+    .map(([prefecture, bukkenList]) => {
+      const formattedBukken = bukkenList
+        .map(formatBukkenDetails)
+        .join("\n---\n");
+      return `*${prefecture}の物件*:\n${formattedBukken}`;
+    })
+    .join("\n\n====================\n\n");
 }
