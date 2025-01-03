@@ -19,9 +19,7 @@ import { notifySlack } from "./slackNotifier";
         const dateOrigin = new Date();
         const month = dateOrigin.getMonth() + 1;
         const day = dateOrigin.getDate();
-        const hours = String(dateOrigin.getHours()).padStart(2, "0");
-        const minutes = String(dateOrigin.getMinutes()).padStart(2, "0");
-        const date = `${month}月${day}日 ${hours}時${minutes}分`;
+        const date = `${month}月${day}日`;
 
         await notifySlack(
           `\
