@@ -10,8 +10,7 @@ export function formatBukkenDetails(property: FormattedBukkenData): string {
     *物件名*: ${property.name}  
     *所在地*: ${property.location}  
     *部屋数*: ${property.roomCount}部屋  
-    *家賃*: ${property.rent}  
-    *共益費*: ${property.commonFee}  
+    *家賃*: ${property.rent}(共益費: ${property.commonFee})  
     *アクセス*: \n${property.access.map((line) => `・${line}`).join("\n")}
 
     ${property.imageUrl}
