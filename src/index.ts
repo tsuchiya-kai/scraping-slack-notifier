@@ -24,7 +24,7 @@ import { notifySlack } from "./slackNotifier";
         await notifySlack(
           `\
           🏠 *物件がありました！* ${date} 🏠\n\n${formatBukkenDetailsGroupedByPrefecture(
-            [...bukkenData.chiba, ...bukkenData.saitama]
+            [...bukkenData.chiba, ...bukkenData.saitama.filter(s => s.name !== "東坂戸")]
           )}`
         );
       }
