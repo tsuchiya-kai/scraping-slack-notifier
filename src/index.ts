@@ -16,8 +16,11 @@ import { notifySlack } from "./slackNotifier";
       console.log("Slackに通知を送信します...");
       const bukkenData = await fetchChibaAndSaitamaData(data);
       if (bukkenData) {
-        const filterd = [...bukkenData.chiba, ...bukkenData.saitama.filter(s => s.name !== "東坂戸")]
-        if(filterd.length === 0) return
+        const filterd = [
+          ...bukkenData.chiba,
+          // ...bukkenData.saitama.filter(s => s.name !== "東坂戸")
+        ];
+        if (filterd.length === 0) return;
 
         const dateOrigin = new Date();
         const month = dateOrigin.getMonth() + 1;
@@ -26,7 +29,9 @@ import { notifySlack } from "./slackNotifier";
 
         await notifySlack(
           `\
-          🏠 *物件がありました！* ${date} 🏠\n\n${formatBukkenDetailsGroupedByPrefecture(filterd)}`
+          🏠 *物件がありました！* ${date} 🏠\n\n${formatBukkenDetailsGroupedByPrefecture(
+            filterd
+          )}`
         );
       }
     } else {
