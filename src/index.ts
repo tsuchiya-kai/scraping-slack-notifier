@@ -47,15 +47,18 @@ const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
           ${estateDetailList
             .map((ed, i) => {
               return `\
-物件${i + 1} ====================
+
+*物件${i + 1}* ====================
+
 物件名: ${ed.name}\n
 階: ${ed.floor}\n
 家賃: ${ed.rent}\n
 間取り: ${ed.type}\n
 リンク: ${ed.urlDetail}\n
+====================
 `;
             })
-            .join("\n\n====================\n\n")}
+            .join("\n")}
           `
         );
       }
