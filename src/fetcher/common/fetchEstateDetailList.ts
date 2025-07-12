@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const ENDPOINT = "https://chintai.r6.ur-net.go.jp/chintai/api/room/list/";
+const DOMAIN = "https://www.ur-net.go.jp/";
 
 type Params = {
   mode: string;
@@ -94,7 +95,7 @@ export async function fetchEstateDetailList(
       floor,
       rent,
       type,
-      urlDetail: urlDetail_sp,
+      urlDetail: DOMAIN + urlDetail_sp,
     }));
   } catch (error) {
     console.error("fetchEstateDetailList APIの取得に失敗しました:", error);
