@@ -1,8 +1,4 @@
-import {
-  fetchBukkenDetails,
-  FormattedBukkenData,
-} from "../fetcher/fetchBukkenDetails";
-import type { FormattedProperty } from "../fetcher/fetchProperties";
+import type { FormattedProperty } from "../fetcher/common/fetchProperties";
 
 const WATCH_PREFECTURES = ["千葉"]; //tdfk_name
 
@@ -14,26 +10,6 @@ export const hasPrefectureInFormattedProperty = (
       WATCH_PREFECTURES.includes(prefecture.name)
     )
   );
-
-export const fetchChibaEstates = async (
-  properties: FormattedProperty[]
-): Promise<FormattedBukkenData[] | undefined> => {
-  const chiba = properties
-    .find((property) =>
-      property.prefectures.some((pref) => pref.name === "千葉")
-    )
-    ?.prefectures.find((p) => p.name === "千葉");
-
-  if (!chiba) {
-    console.log("千葉県のデータが存在しません。");
-    return;
-  }
-
-  const chibaEstates = await fetchBukkenDetails(chiba.tdfk, chiba.name);
-  console.log("千葉データ:", chibaEstates);
-
-  return chibaEstates;
-};
 
 // interface FetchChibaAndSaitamaData {
 //   chiba: FormattedBukkenData[];

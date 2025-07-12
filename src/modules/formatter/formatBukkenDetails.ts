@@ -1,4 +1,4 @@
-import type { FormattedBukkenData } from "../../fetcher/fetchBukkenDetails";
+import type { FormattedBukkenData } from "../../fetcher/common/fetchBukkenDetails";
 
 /**
  * 物件データをSlack通知用のフォーマットに変換する関数

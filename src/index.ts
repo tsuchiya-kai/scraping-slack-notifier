@@ -1,9 +1,7 @@
-import { fetchProperties } from "./fetcher/fetchProperties";
-import {
-  hasPrefectureInFormattedProperty,
-  fetchChibaEstates,
-} from "./modules/checker";
+import { fetchProperties } from "./fetcher/common/fetchProperties";
+import { fetchChibaEstates } from "./fetcher/fetchChibaEstates";
 import { formatBukkenDetailsGroupedByPrefecture } from "./modules/formatter/formatBukkenDetails";
+import { hasPrefectureInFormattedProperty } from "./modules/checker";
 import { notifySlack } from "./modules/slackNotifier";
 
 (async function main() {
