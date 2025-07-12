@@ -97,7 +97,7 @@ export async function fetchEstateDetailList(
       urlDetail: urlDetail_sp,
     }));
   } catch (error) {
-    console.error("物件データの取得に失敗しました:", error);
+    console.error("fetchEstateDetailList APIの取得に失敗しました:", error);
     throw error;
   }
 }

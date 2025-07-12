@@ -84,7 +84,7 @@ export async function fetchBukkenDetails(
 
     return processBukkenDetails(response.data, tdfkName);
   } catch (error) {
-    console.error("物件データの取得に失敗しました:", error);
+    console.error("processBukkenDetails API の取得に失敗しました:", error);
     throw error;
   }
 }

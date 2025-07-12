@@ -54,7 +54,7 @@ export async function fetchProperties(): Promise<FormattedProperty[]> {
 
     return processProperties(response.data);
   } catch (error) {
-    console.error("APIからのデータ取得に失敗しました:", error);
+    console.error("fetchProperties APIからのデータ取得に失敗しました:", error);
     throw error;
   }
 }
