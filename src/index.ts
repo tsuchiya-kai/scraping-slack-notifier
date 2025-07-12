@@ -4,7 +4,7 @@ import {
   fetchChibaAndSaitamaData,
 } from "./modules/checker";
 import { formatBukkenDetailsGroupedByPrefecture } from "./modules/formatter/formatBukkenDetails";
-import { notifySlack } from "./slackNotifier";
+import { notifySlack } from "./modules/slackNotifier";
 
 (async function main() {
   try {
