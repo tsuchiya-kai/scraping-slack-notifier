@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const ENDPOINT = "https://chintai.r6.ur-net.go.jp/chintai/api/room/list/";
-const DOMAIN = "https://www.ur-net.go.jp/";
+const DOMAIN = "https://www.ur-net.go.jp";
 
 type Params = {
   mode: string;
