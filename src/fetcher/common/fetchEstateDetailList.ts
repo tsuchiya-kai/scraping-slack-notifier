@@ -60,6 +60,7 @@ type ExtractEstateDetail = {
   floor: string;
   rent: string;
   type: string;
+  urlDetail: string;
 };
 
 /**
@@ -88,11 +89,12 @@ export async function fetchEstateDetailList(
       },
     });
 
-    return response.data.map(({ name, floor, rent, type }) => ({
+    return response.data.map(({ name, floor, rent, type, urlDetail_sp }) => ({
       name,
       floor,
       rent,
       type,
+      urlDetail: urlDetail_sp,
     }));
   } catch (error) {
     console.error("物件データの取得に失敗しました:", error);

@@ -43,9 +43,19 @@ const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
 
         await notifySlack(
           `\
-          🏠 *物件がありました！* ${date} 🏠\n\n${formatBukkenDetailsGroupedByPrefecture(
-            estates!
-          )}`
+          🏠 *物件がありました！* ${date} 🏠\n\n
+          ${estateDetailList
+            .map((ed) => {
+              return `\
+              floor: ${ed.floor}\n
+              rent: ${ed.rent}\n
+              type: ${ed.type}\n
+              name: ${ed.name}\n
+              url: ${ed.urlDetail}\n
+            `;
+            })
+            .join("\n\n====================\n\n")}
+          `
         );
       }
     }
