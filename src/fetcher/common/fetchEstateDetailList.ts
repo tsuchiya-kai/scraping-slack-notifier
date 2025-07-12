@@ -67,7 +67,7 @@ type ExtractEstateDetail = {
  * @param tdfk 都道府県コード
  * @returns 整形済みの物件データリスト
  */
-export async function fetchBukkenDetails(
+export async function fetchEstateDetailList(
   id: string
 ): Promise<ExtractEstateDetail[]> {
   const params: Params = {
