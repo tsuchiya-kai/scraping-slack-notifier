@@ -4,22 +4,29 @@ import {
 } from "../fetcher/common/fetchBukkenDetails";
 import type { FormattedProperty } from "../fetcher/common/fetchProperties";
 
-export const fetchChibaEstates = async (
-  properties: FormattedProperty[]
-): Promise<FormattedBukkenData[] | undefined> => {
-  const chiba = properties
-    .find((property) =>
-      property.prefectures.some((pref) => pref.name === "千葉")
-    )
-    ?.prefectures.find((p) => p.name === "千葉");
+const TARGET_PREF_LIST = ["千葉", "北海道", "名古屋", "岐阜"];
 
-  if (!chiba) {
-    console.log("千葉県のデータが存在しません。");
+export const fetchChibaEstates = async (
+  properties: FormattedProperty[],
+): Promise<FormattedBukkenData[] | undefined> => {
+  const allPrefs = properties.flatMap((property) => property.prefectures);
+
+  const targetPrefs = TARGET_PREF_LIST.flatMap((prefName) => {
+    const pref = allPrefs.find((p) => p.name === prefName);
+    return pref ? [pref] : [];
+  });
+
+  if (targetPrefs.length === 0) {
+    console.log("対象都道府県のデータが存在しません。");
     return;
   }
 
-  const chibaEstates = await fetchBukkenDetails(chiba.tdfk, chiba.name);
-  console.log("千葉データ:", chibaEstates);
+  const results = await Promise.all(
+    targetPrefs.map((pref) => fetchBukkenDetails(pref.tdfk, pref.name)),
+  );
 
-  return chibaEstates;
+  const estates = results.flat();
+  console.log("取得データ:", estates);
+
+  return estates;
 };
