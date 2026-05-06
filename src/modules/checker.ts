@@ -1,6 +1,6 @@
 import type { FormattedProperty } from "../fetcher/common/fetchProperties";
 
-export const WATCH_PREFECTURES = ["千葉", "北海道", "名古屋", "岐阜"]; //tdfk_name
+export const WATCH_PREFECTURES = ["千葉", "北海道", "愛知", "東京", "岐阜"]; //tdfk_name
 
 export const hasPrefectureInFormattedProperty = (
   processedProperties: FormattedProperty[],
