@@ -11,6 +11,10 @@ const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
   try {
     console.log("APIから物件情報を取得します...");
     const properties = await fetchProperties();
+    console.log(
+      "物件情報を取得しました。",
+      JSON.stringify(properties, null, 2),
+    );
 
     const isIncludedTargetProperty =
       hasPrefectureInFormattedProperty(properties);
@@ -20,7 +24,7 @@ const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
     const estates = await fetchChibaEstates(properties);
 
     const hasTargetEstate = !!estates?.some(
-      ({ id }) => id === TARGET_ESTATE_ID
+      ({ id }) => id === TARGET_ESTATE_ID,
     );
 
     if (hasTargetEstate) {
@@ -59,7 +63,7 @@ const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
 `;
             })
             .join("\n")}
-          `
+          `,
         );
       }
     }
