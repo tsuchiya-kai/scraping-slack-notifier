@@ -46,20 +46,16 @@ import { notifySlack } from "./modules/slackNotifier";
     const date = `${month}月${day}日`;
     console.log("Slackに通知を送信します...");
 
+    const NUMBERS = ["①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩"];
+
     const message = [
-      `🏠 *物件がありました！* ${date} 🏠`,
+      `🏠 *物件がありました！${date}* 🏠`,
       ...estatesWithRooms.map(({ estate, rooms }) =>
         [
-          `\n*【${estate.tdfkName}】${estate.name}*`,
+          `\n📍 *【${estate.tdfkName}】${estate.name}*`,
           ...rooms.map(
-            (room, i) => `\
-*部屋${i + 1}* ====================
-物件名: ${room.name}
-階: ${room.floor}
-家賃: ${room.rent}
-間取り: ${room.type}
-リンク: ${room.urlDetail}
-====================`,
+            (room, i) =>
+              `${NUMBERS[i] ?? `${i + 1}.`} *${room.name}*　${room.floor} / ${room.type} / ${room.rent}　<${room.urlDetail}|詳細>`,
           ),
         ].join("\n"),
       ),
