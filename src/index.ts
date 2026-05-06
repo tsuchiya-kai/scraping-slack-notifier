@@ -35,21 +35,30 @@ import { notifySlack } from "./modules/slackNotifier";
       }),
     );
 
-    const estatesWithRooms = estateDetails.filter(
-      ({ rooms }) => rooms.length > 0,
-    );
+    const MIN_FLOOR = 3;
+    const estatesWithRooms = estateDetails
+      .map(({ estate, rooms }) => ({
+        estate,
+        rooms: rooms.filter((room) => {
+          const floor = parseInt(room.floor, 10);
+          return !isNaN(floor) && floor >= MIN_FLOOR;
+        }),
+      }))
+      .filter(({ rooms }) => rooms.length > 0);
     if (estatesWithRooms.length === 0) return;
 
     const dateOrigin = new Date();
     const month = dateOrigin.getMonth() + 1;
     const day = dateOrigin.getDate();
-    const date = `${month}月${day}日`;
+    const hours = dateOrigin.getHours().toString().padStart(2, "0");
+    const minutes = dateOrigin.getMinutes().toString().padStart(2, "0");
+    const datetime = `${month}月${day}日 ${hours}:${minutes}`;
     console.log("Slackに通知を送信します...");
 
     const NUMBERS = ["①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩"];
 
     const message = [
-      `🏠 *物件がありました！${date}* 🏠`,
+      `🏠 *物件がありました！${datetime}* 🏠`,
       ...estatesWithRooms.map(({ estate, rooms }) =>
         [
           `\n📍 *【${estate.tdfkName}】${estate.name}*`,
