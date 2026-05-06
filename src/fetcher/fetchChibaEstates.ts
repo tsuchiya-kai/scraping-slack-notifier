@@ -21,6 +21,8 @@ export const fetchChibaEstates = async (
     return;
   }
 
+  console.log("対象都道府県のデータ:", targetPrefs);
+
   const results = await Promise.all(
     targetPrefs.map((pref) => fetchBukkenDetails(pref.tdfk, pref.name)),
   );
