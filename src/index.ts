@@ -1,11 +1,8 @@
 import { fetchProperties } from "./fetcher/common/fetchProperties";
 import { fetchChibaEstates } from "./fetcher/fetchChibaEstates";
 import { fetchEstateDetailList } from "./fetcher/common/fetchEstateDetailList";
-import { formatBukkenDetailsGroupedByPrefecture } from "./modules/formatter/formatBukkenDetails";
 import { hasPrefectureInFormattedProperty } from "./modules/checker";
 import { notifySlack } from "./modules/slackNotifier";
-
-const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
 
 (async function main() {
   try {
@@ -19,54 +16,56 @@ const TARGET_ESTATE_ID = "30_5960"; // 千葉県の物件ID
     const isIncludedTargetProperty =
       hasPrefectureInFormattedProperty(properties);
 
+    console.log(
+      "対象都道府県の物件が含まれているか:",
+      isIncludedTargetProperty,
+    );
+
     if (!isIncludedTargetProperty) return;
 
     const estates = await fetchChibaEstates(properties);
+    if (!estates || estates.length === 0) return;
 
-    const hasTargetEstate = !!estates?.some(
-      ({ id }) => id === TARGET_ESTATE_ID,
+    console.log(JSON.stringify(estates, null, 2));
+
+    const estateDetails = await Promise.all(
+      estates.map(async (estate) => {
+        const rooms = await fetchEstateDetailList(estate.id);
+        return { estate, rooms };
+      }),
     );
 
-    if (hasTargetEstate) {
-      const estateDetailList = await fetchEstateDetailList(TARGET_ESTATE_ID);
-      const hasTargetSpecificEstate = estateDetailList.some(({ floor }) => {
-        return (
-          floor === "3階" ||
-          floor === "4階" ||
-          floor === "5階" ||
-          floor === "6階"
-        );
-      });
+    const estatesWithRooms = estateDetails.filter(
+      ({ rooms }) => rooms.length > 0,
+    );
+    if (estatesWithRooms.length === 0) return;
 
-      if (hasTargetSpecificEstate) {
-        const dateOrigin = new Date();
-        const month = dateOrigin.getMonth() + 1;
-        const day = dateOrigin.getDate();
-        const date = `${month}月${day}日`;
-        console.log("Slackに通知を送信します...");
+    const dateOrigin = new Date();
+    const month = dateOrigin.getMonth() + 1;
+    const day = dateOrigin.getDate();
+    const date = `${month}月${day}日`;
+    console.log("Slackに通知を送信します...");
 
-        await notifySlack(
-          `\
-          🏠 *物件がありました！* ${date} 🏠\n\n
-          ${estateDetailList
-            .map((ed, i) => {
-              return `\
+    const message = [
+      `🏠 *物件がありました！* ${date} 🏠`,
+      ...estatesWithRooms.map(({ estate, rooms }) =>
+        [
+          `\n*【${estate.tdfkName}】${estate.name}*`,
+          ...rooms.map(
+            (room, i) => `\
+*部屋${i + 1}* ====================
+物件名: ${room.name}
+階: ${room.floor}
+家賃: ${room.rent}
+間取り: ${room.type}
+リンク: ${room.urlDetail}
+====================`,
+          ),
+        ].join("\n"),
+      ),
+    ].join("\n");
 
-*物件${i + 1}* ====================
-
-物件名: ${ed.name}\n
-階: ${ed.floor}\n
-家賃: ${ed.rent}\n
-間取り: ${ed.type}\n
-リンク: ${ed.urlDetail}\n
-====================
-`;
-            })
-            .join("\n")}
-          `,
-        );
-      }
-    }
+    await notifySlack(message);
   } catch (error) {
     console.error("エラーが発生しました:", error);
   }
